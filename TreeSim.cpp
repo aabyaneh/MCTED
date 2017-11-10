@@ -154,7 +154,12 @@ int main (int argc, char* argv[])
     input_trees.close();
     
   } else {
-    std::cout << "HELP"<< std::endl;
+    std::cout << "HELP:"<< std::endl;
+    std::cout << "  " << "-i input" << "            " << "Input trees in a file called input"<< std::endl;
+    std::cout << "  " << "-s" << "                  " << "Serial execution"<< std::endl;
+    std::cout << "  " << "-p num_cores" << "        " << "Parallel execution"<< std::endl;
+    std::cout << "  " << "-s -p num_cores" << "     " << "Serial and Parallel execution"<< std::endl;
+    std::cout << "  " << "example:" << "            " << "./tr -i trees.txt -s -p 4"<< std::endl;
   }
   
   return 0;
