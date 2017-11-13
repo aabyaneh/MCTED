@@ -31,24 +31,24 @@ void preprocessor(char* tree1_str, char* tree2_str)
   parser::labelid = 1;
   parser::num = 0;
   parser::hash_table_type hash_table;
-  
+
   tree1 = parser::tree_create(tree1_str, hash_table, leaves_cnt1);
   tree1_size = parser::num;  parser::num = 0;
   tree2 = parser::tree_create(tree2_str, hash_table, leaves_cnt2);
   tree2_size = parser::num;
-  
+
   int node_ids = 1;
   tree1_postorder = new int[tree1_size + 1];
   preprocess::postorder_traverse(tree1, tree1_postorder, &node_ids);
   node_ids = 1;
   tree2_postorder = new int[tree2_size + 1];
   preprocess::postorder_traverse(tree2, tree2_postorder, &node_ids);
-  
+
   l1 = new int[tree1_size + 1];
   l2 = new int[tree2_size + 1];
   preprocess::lmld(tree1, l1);
   preprocess::lmld(tree2, l2);
-  
+
   kr1 = new int[leaves_cnt1+1];
   kr2 = new int[leaves_cnt2+1];
   preprocess::key_roots(kr1, l1, leaves_cnt1, tree1_size);
@@ -58,42 +58,42 @@ void preprocessor(char* tree1_str, char* tree2_str)
 void zs_serial()
 {
   float result;
-  
+
   gettimeofday(&tv_begin,NULL);
   result = zss::tree_dist(tree1_size + 1, tree2_size + 1);
   gettimeofday(&tv_end,NULL);
-  
+
   time_elapsed_in_mcseconds = (tv_end.tv_sec - tv_begin.tv_sec) * 1000000 + (tv_end.tv_usec - tv_begin.tv_usec);
-  
-  std::cout << "###########################################"<< std::endl;
+
+  std::cout << "######################################"<< std::endl;
   std::cout << "***** Serial *****" << std::endl;
-  std::cout << "###########################################"<< std::endl;
+  std::cout << "######################################"<< std::endl;
   std::cout << "**** tree_1 size: " << tree1_size << std::endl;
   std::cout << "**** tree_2 size: " << tree2_size << std::endl;
   std::cout << "tree edit distance: " << result << std::endl;
-  std::cout << "total time (second): " << time_elapsed_in_mcseconds / 1000000 << std::endl;
+  std::cout << "time (second): " << time_elapsed_in_mcseconds / 1000000 << std::endl;
   std::cout << std::endl;
 }
 
 void zs_parallel() {
   float result;
-  
+
   zsp::y_td = tree2_size + 1;
-  
+
   gettimeofday(&tv_begin,NULL);
   result = zsp::workload(tree1, tree2);
   gettimeofday(&tv_end,NULL);
-  
+
   time_elapsed_in_mcseconds = (tv_end.tv_sec - tv_begin.tv_sec) * 1000000 + (tv_end.tv_usec - tv_begin.tv_usec);
-  
-  std::cout << "###########################################"<< std::endl;
+
+  std::cout << "######################################"<< std::endl;
   std::cout << "***** Parallel *****" << std::endl;
-  std::cout << "###########################################"<< std::endl;
+  std::cout << "######################################"<< std::endl;
   std::cout << "**** tree_1 size: " << tree1_size << std::endl;
   std::cout << "**** tree_2 size: " << tree2_size << std::endl;
   std::cout << "**** num of threads in pool: " << zsp::num_of_threads_in_pool << std::endl;
   std::cout << "tree edit distance: " << result << std::endl;
-  std::cout << "total time (second): " << time_elapsed_in_mcseconds / 1000000 << std::endl;
+  std::cout << "time (second): " << time_elapsed_in_mcseconds / 1000000 << std::endl;
   std::cout << std::endl;
 }
 
@@ -102,8 +102,8 @@ int main (int argc, char* argv[])
   /*  key_root pairs with fd matrices of less than 'subtrees_nodes_num_threshold' elements
    will compute serially.  */
   zsp::subtrees_nodes_num_threshold = 50;
-  
-  
+
+
   std::string input;
   int error = 0;
   int serial = 0;
@@ -125,10 +125,13 @@ int main (int argc, char* argv[])
         i++;
       } else
       error = 1;
+    } else if (!strcmp(argv[i], "-h")) {
+      error = 1;
+      break;
     }
     i++;
   }
-  
+
   std::ifstream input_trees;
   if (error == 0 && input.length() != 0) {
     input_trees.open(input);
@@ -136,31 +139,31 @@ int main (int argc, char* argv[])
     std::string line2;
     std::getline(input_trees, line1);
     std::getline(input_trees, line2);
-    
+
     preprocessor(&line1[0], &line2[0]);
-    
+
     if (serial == 1)
     zs_serial();
     if (parallel == 1)
     zs_parallel();
-    
+
     delete[] tree1_postorder;
     delete[] tree2_postorder;
     delete[] l1;
     delete[] l2;
     delete[] kr1;
     delete[] kr2;
-    
+
     input_trees.close();
-    
+
   } else {
     std::cout << "HELP:"<< std::endl;
     std::cout << "  " << "-i input" << "            " << "Input trees in a file called input"<< std::endl;
     std::cout << "  " << "-s" << "                  " << "Serial execution"<< std::endl;
     std::cout << "  " << "-p num_cores" << "        " << "Parallel execution"<< std::endl;
     std::cout << "  " << "-s -p num_cores" << "     " << "Serial and Parallel execution"<< std::endl;
-    std::cout << "  " << "example:" << "            " << "./tr -i trees.txt -s -p 4"<< std::endl;
+    std::cout << "  " << "example:" << "            " << "./mcted -i trees.txt -s -p 4"<< std::endl;
   }
-  
+
   return 0;
 }
