@@ -1,3 +1,6 @@
+// Copyright (c) 2017, Alireza Abyaneh. All rights reserved.
+// Please see LICENSE file
+
 namespace zss {
   
   void min(float in1, float in2, float in3, float& res)

@@ -1,3 +1,6 @@
+// Copyright (c) 2017, Alireza Abyaneh. All rights reserved.
+// Please see LICENSE file
+
 int del_cost = 1;
 int ins_cost = 1;
 int up_cost = 1;

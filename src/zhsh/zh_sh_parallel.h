@@ -1,3 +1,6 @@
+// Copyright (c) 2017, Alireza Abyaneh. All rights reserved.
+// Please see LICENSE file
+
 #include "../thread_pool/thpool.h"
 
 namespace zsp {

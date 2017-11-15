@@ -1,3 +1,6 @@
+// Copyright (c) 2017, Alireza Abyaneh. All rights reserved.
+// Please see LICENSE file
+
 #include <iostream>
 #include <fstream>
 #include <sys/time.h>

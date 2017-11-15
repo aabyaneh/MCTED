@@ -1,3 +1,5 @@
+// Copyright (c) 2017, Alireza Abyaneh. All rights reserved.
+// Please see LICENSE file
 
 namespace parser {
   int num;
