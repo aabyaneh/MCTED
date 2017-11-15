@@ -1,4 +1,4 @@
-// Copyright (c) 2017, Alireza Abyaneh. All rights reserved.
+// Copyright (c) 2017, Alireza Abyaneh et al. All rights reserved.
 // Please see LICENSE file
 
 struct node_t {
