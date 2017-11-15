@@ -9,3 +9,6 @@ clang++ -O3 -std=c++11 TreeSim.cpp -lpthread -o mcted
 ```
 ./mcted -h
 ```
+
+## References:
+* tree-edit-distance.dbresearch.uni-salzburg.at
