@@ -7,8 +7,7 @@ namespace parser {
   
   typedef std::unordered_map<std::string,int> hash_table_type;
   
-  Node* tree_create(char* str, hash_table_type& hash_table, int& leaves_cnt)
-  {
+  Node* tree_create(char* str, hash_table_type& hash_table, int& leaves_cnt) {
     int length = std::strlen(str);
     int first = 1;
     int size;

@@ -6,8 +6,7 @@ namespace preprocess {
   ////////
   // postorder traversal of the tree
   ////////
-  void postorder_traverse(Node* root, int* tr_post, int* node_ids)
-  {
+  void postorder_traverse(Node* root, int* tr_post, int* node_ids) {
     if (root) {
       if (root->children_number > 0) {
         for (int i = 0; i < root->children_number; ++i) {
@@ -24,8 +23,7 @@ namespace preprocess {
   ////////
   // Left most leaf descendant computation
   ////////
-  void lmld(Node* root, int* l)
-  {
+  void lmld(Node* root, int* l) {
     for (int i = 1; i <= root->children_number; ++i) {
       lmld(root->children.at(i - 1), l);
     }
@@ -41,8 +39,7 @@ namespace preprocess {
   ////////
   // key_root nodes of the tree
   ////////
-  void key_roots(int* kr, int* l, int leaf_count, int tree_size)
-  {
+  void key_roots(int* kr, int* l, int leaf_count, int tree_size) {
     int* visit = new int[tree_size + 1]();
     
     int k = leaf_count;

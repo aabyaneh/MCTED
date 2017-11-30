@@ -28,8 +28,7 @@ struct thread {
   pool* thpool_p;
 };
 
-void init_q(queue_t* Q)
-{
+void init_q(queue_t* Q) {
   node_t* node = new node_t();
   node->next = NULL;
   Q->head = node;
@@ -38,8 +37,7 @@ void init_q(queue_t* Q)
   pthread_mutex_init(&Q->t_lock, NULL);
 }
 
-void enqueue(pool* thpool_p, queue_t* Q, void* arg_p)
-{
+void enqueue(pool* thpool_p, queue_t* Q, void* arg_p) {
   node_t* node = new node_t();
   node->arg = arg_p;
   node->next = NULL;
@@ -49,8 +47,7 @@ void enqueue(pool* thpool_p, queue_t* Q, void* arg_p)
   //pthread_mutex_unlock(&Q->t_lock);
 }
 
-bool dequeue(queue_t* Q, node_t* item)
-{
+bool dequeue(queue_t* Q, node_t* item) {
   node_t* node;
   node_t* new_head;
   pthread_mutex_lock(&Q->h_lock);
@@ -69,8 +66,7 @@ bool dequeue(queue_t* Q, node_t* item)
   return true;
 }
 
-void* thread_do(void* th)
-{
+void* thread_do(void* th) {
   struct thread* thread_p = (struct thread*) th;
   
   pool* thpool_p = thread_p->thpool_p;
@@ -106,8 +102,7 @@ void* thread_do(void* th)
 }
 
 
-struct pool* thpool_init(int num_threads, void (*function)(void* arg, int& id))
-{
+struct pool* thpool_init(int num_threads, void (*function)(void* arg, int& id)) {
   // create the thread pool
   pool* thpool_p = new pool();
   thpool_p->num_threads = num_threads;
@@ -128,8 +123,7 @@ struct pool* thpool_init(int num_threads, void (*function)(void* arg, int& id))
   return thpool_p;
 }
 
-void thpool_start(struct pool* thpool_p)
-{
+void thpool_start(struct pool* thpool_p) {
   // create the threads in the pool
   for (int i = 0; i < thpool_p->num_threads; i++) {
     thpool_p->threads[i].thpool_p = thpool_p;
@@ -139,8 +133,7 @@ void thpool_start(struct pool* thpool_p)
   }
 }
 
-void thpool_destroy(pool* thpool_p)
-{
+void thpool_destroy(pool* thpool_p) {
   thpool_p->end = true;
   
   bool result_code;

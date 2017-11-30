@@ -62,8 +62,7 @@ namespace zsp {
   // for each key_root node, returns the number of node in postorder traverse
   // which is the first key_root ancestor of it
   ////
-  void kr_parent(Node* root, int* kr, struct parents* parent, int leaves_cnt)
-  {
+  void kr_parent(Node* root, int* kr, struct parents* parent, int leaves_cnt) {
     int id = root->id;
     for (int cnt = 1; cnt < leaves_cnt + 1; cnt++) {
       if (kr[cnt] == id) {
@@ -98,8 +97,7 @@ namespace zsp {
   /////
   /// The thread for execution of one pair of key_root_nodes
   /////
-  void thread_td(void* argument, int& id)
-  {
+  void thread_td(void* argument, int& id) {
     struct arg_td_struct *args = (struct arg_td_struct *)argument;
     int i = args->arg1; // key_root node of tree1
     int j = args->arg2; // key_root node of tree2
@@ -116,8 +114,7 @@ namespace zsp {
     int dj;
     int ren;
     
-    while(true)
-    {
+    while(true) {
       H = i - l1[i] + 2; // Height of fd matrix
       W = j - l2[j] + 2; // Width of fd matrix
       H_base = l1[i] - 1; // Base index of matrix (Height)
@@ -148,8 +145,7 @@ namespace zsp {
             
             td[di * y_td + dj] = fd[(di - H_base) * W + (dj - W_base)];
             
-          }
-          else {
+          } else {
             min(fd[(di - 1 - H_base) * W + (dj - W_base)] + del_cost, fd[(di - H_base) * W + (dj - 1 - W_base)] + ins_cost,
                 fd[(l1[di] - 1 - H_base) * W + (l2[dj] - 1 - W_base)] + td[di * y_td + dj],
                 fd[(di - H_base) * W + (dj - W_base)]);
@@ -164,44 +160,35 @@ namespace zsp {
       ////
       is_par = false;
       is_par2 = false;
-      if (j1 < leaves_cnt2)
-      {
+      if (j1 < leaves_cnt2) {
         ctd[i * y_td + parents_2[j1].parent].fetch_add(-1);
         int val = ctd[i*y_td + parents_2[j1].parent].load();
-        while(val == 0)
-        {
-          if(ctd[i * y_td + parents_2[j1].parent].compare_exchange_weak(val, -2))
-          {
+        while(val == 0) {
+          if(ctd[i * y_td + parents_2[j1].parent].compare_exchange_weak(val, -2)) {
             is_par = true;
           }
         }
       }
       
-      if(i1 < leaves_cnt1)
-      {
+      if(i1 < leaves_cnt1) {
         ctd[parents_1[i1].parent * y_td + j].fetch_add(-1);
         int val = ctd[parents_1[i1].parent * y_td + j].load();
-        while(val == 0)
-        {
-          if(ctd[parents_1[i1].parent * y_td + j].compare_exchange_weak(val, -2))
-          {
+        while(val == 0) {
+          if(ctd[parents_1[i1].parent * y_td + j].compare_exchange_weak(val, -2)) {
             is_par2 = true;
           }
         }
       }
       
-      if(i1 == leaves_cnt1 && j1 == leaves_cnt2)
-      {
+      if(i1 == leaves_cnt1 && j1 == leaves_cnt2) {
         pthread_mutex_lock(&mutex_c);
         fin = true;
         pthread_cond_signal(&cv_c);
         pthread_mutex_unlock(&mutex_c);
       }
       
-      if(is_par)
-      {
-        if(is_par2)
-        {
+      if(is_par) {
+        if(is_par2) {
           arg_td_struct* thread_args = new arg_td_struct[1];
           thread_args[0].arg1 = parents_1[i1].parent;
           thread_args[0].arg2 = j;
@@ -215,14 +202,10 @@ namespace zsp {
         
         j = parents_2[j1].parent;
         j1 = parents_2[j1].parent_idx;
-      }
-      else if (is_par2)
-      {
+      } else if (is_par2) {
         i = parents_1[i1].parent;
         i1 = parents_1[i1].parent_idx;
-      }
-      else
-      {
+      } else {
         break;
       }
       
@@ -235,8 +218,7 @@ namespace zsp {
   ////////
   //  Different key-root pairs
   ////////
-  float tree_dist(int size1, int size2)
-  {
+  float tree_dist(int size1, int size2) {
     fin = false;
     
     ////
@@ -371,8 +353,7 @@ namespace zsp {
   ////
   // dependency detection
   ////
-  float workload(Node* tree1, Node* tree2)
-  {
+  float workload(Node* tree1, Node* tree2) {
     ////////
     // Preparing data for detection of independent key_root pairs
     ////////
@@ -421,13 +402,11 @@ namespace zsp {
     int jj;
     subtree_nodes1 = new int[leaves_cnt1 + 1]();
     subtree_nodes2 = new int[leaves_cnt2 + 1]();
-    for (int i = 1; i < leaves_cnt1 + 1; i++)
-    {
+    for (int i = 1; i < leaves_cnt1 + 1; i++) {
       ii = kr1[i];
       subtree_nodes1[i] = ii - l1[ii] + 2;
     }
-    for (int j = 1; j < leaves_cnt2 + 1; j++)
-    {
+    for (int j = 1; j < leaves_cnt2 + 1; j++) {
       jj = kr2[j];
       subtree_nodes2[j] = jj - l2[jj] + 2;
     }

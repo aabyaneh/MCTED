@@ -25,8 +25,7 @@ struct timeval tv_begin;
 struct timeval tv_end;
 double time_elapsed_in_mcseconds;
 
-void preprocessor(char* tree1_str, char* tree2_str)
-{
+void preprocessor(char* tree1_str, char* tree2_str) {
   tree1_size = 0;
   tree2_size = 0;
   leaves_cnt1 = 0;
@@ -58,8 +57,7 @@ void preprocessor(char* tree1_str, char* tree2_str)
   preprocess::key_roots(kr2, l2, leaves_cnt2, tree2_size);
 }
 
-void zs_serial()
-{
+void zs_serial() {
   float result;
 
   gettimeofday(&tv_begin,NULL);
@@ -100,8 +98,7 @@ void zs_parallel() {
   std::cout << std::endl;
 }
 
-int main (int argc, char* argv[])
-{
+int main (int argc, char* argv[]) {
   /*  key_root pairs with fd matrices of less than 'subtrees_nodes_num_threshold' elements
    will compute serially.  */
   zsp::subtrees_nodes_num_threshold = 50;
@@ -118,7 +115,7 @@ int main (int argc, char* argv[])
         input = argv[i + 1];
         i++;
       } else
-      error = 1;
+        error = 1;
     } else if (!strcmp(argv[i], "-s")) {
       serial = 1;
     } else if (!strcmp(argv[i], "-p")) {
@@ -127,7 +124,7 @@ int main (int argc, char* argv[])
         parallel = 1;
         i++;
       } else
-      error = 1;
+        error = 1;
     } else if (!strcmp(argv[i], "-h")) {
       error = 1;
       break;

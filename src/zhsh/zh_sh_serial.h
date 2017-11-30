@@ -3,8 +3,7 @@
 
 namespace zss {
   
-  void min(float in1, float in2, float in3, float& res)
-  {
+  void min(float in1, float in2, float in3, float& res) {
     res = in1;
     if (in2 < res) {
       res = in2;
@@ -14,8 +13,7 @@ namespace zss {
     }
   }
   
-  float tree_dist(int size1, int size2)
-  {
+  float tree_dist(int size1, int size2) {
     // tree distance matrix
     float* td = new float[size1 * size2];
     // forest distance matrix
@@ -60,9 +58,7 @@ namespace zss {
               
               td[di * size2 + dj] = fd[(di - H_base) * size2 + (dj - W_base)];
               
-            }
-            else
-            {
+            } else {
               min(fd[(di - 1 - H_base) * size2 + (dj - W_base)] + del_cost, fd[(di - H_base) * size2 + (dj - 1 - W_base)] + ins_cost,
                   fd[(l1[di] - 1 - H_base) * size2 + (l2[dj] - 1 - W_base)] + td[di * size2 + dj],
                   fd[(di - H_base) * size2 + (dj - W_base)]);
